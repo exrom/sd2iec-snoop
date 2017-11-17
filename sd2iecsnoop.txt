@@ -1,0 +1,121 @@
+100 rem *********************
+110 rem sd2iec snoop by exrom
+120 rem *********************
+130 rem
+140 rem
+150 rem initial device adress
+160 da=8
+170 rem
+180 poke53280,12:poke53281,12
+190 gosub 340:rem menu
+200 gosub 910:rem status
+210 print
+220 geta$:ifa$=""then220
+230 ifasc(a$)=133thengosub630
+240 ifasc(a$)=134thengosub790
+250 ifasc(a$)=135thengosub1150
+260 ifasc(a$)=136thengosub1010
+270 ifasc(a$)=219thengosub1100
+280 print"<hit any key>"
+290 geta$:ifa$=""then290
+300 goto 190
+310 rem
+320 rem
+330 rem
+340 rem ***********************
+350 rem          menu
+360 rem ***********************
+370 print".";
+380 printtab(20)".                 ."
+390 printtab(20)"  .  . .  .  .  .  .   .  ."
+400 printtab(20)" . .   . . . .   . .       "
+410 printtab(20)" .   . . . . . .   .  .    . "
+420 printtab(20)"   . . . . . . . .         "
+430 printtab(20)" .  .  .  .  .   .  .    . "
+440 printtab(20)"                   "
+450 printtab(20)" .   .  .  .  .  .  .    . "
+460 printtab(20)"  . .  . .   . .         "
+470 printtab(20)"  . .  .   . . .    .    . "
+480 printtab(20)"  . .  . .   . .         "
+490 printtab(20)" .   .  .  .  .  .  .    . "
+500 printtab(20)"                   "
+510 print"..sd2iec snoop
+520 print".v0.2 by exrom.
+530 PRINT".-f1- show dos
+540 print"     version
+550 print"-f3- change drive
+560 print"     number"da
+570 print"-f5- show sd2iec's
+580 print"     cbm commands
+590 print"-f7- boot file
+600 print"     browser
+610 print"
+620 return
+630 rem ***********************
+640 rem         version
+650 rem ***********************
+660 print"dos version:
+670 open1,da,15
+680 print#1,"ui"
+690 input#1,a1$,a2$,a3$,a4$
+700 close1
+710 printa1$","a2$","a3$","a4$
+720 ifnotleft$(a2$,6)="sd2iec" then780
+730 open1,da,15
+740 print#1,"x?"
+750 input#1,a1$,a2$,a3$,a4$
+760 close1
+770 printa1$","a2$","a3$","a4$
+780 return
+790 rem ***********************
+800 rem         adress
+810 rem ***********************
+820 print"old device adress:"da
+830 input"new device adress";nd
+840 ifnd<4ornd>30 then return
+850 print"changing temporarily to"nd"...
+860 open1,da,15
+870 print#1,"u0>"+chr$(nd)
+880 close1
+890 da=nd
+900 return
+910 open1,da,15
+920 input#1,a1$,a2$,a3$,a4$
+930 printa1$","a2$","a3$","a4$
+940 close1
+950 return
+960 rem ***********************
+970 rem          rtc
+980 rem ***********************
+990 print"- not implemented yet -"
+1000 return
+1010 rem ***********************
+1020 rem          boot
+1030 rem ***********************
+1040 print"......load"chr$(34)"fibr"chr$(34)","da;:print".:"
+1050 FORI=1TO1541:NEXT
+1060 POKE631,131:POKE198,1
+1070 END
+1080 REM POINT OF NO RETURN
+1090 RUN
+1100 REM PRESS SHIFT+ FOR FAKE OUTPUT
+1110 PRINT"DOS VERSION:
+1120 PRINT"73,SD2IEC V0.10.3,00,00
+1130 PRINT"09,SD2IEC V0.10.3-M644P-SW2,00,00
+1140 RETURN
+1150 REM ***********************
+1160 REM    SHOW CBM COMMANDS
+1170 REM ***********************
+1180 PRINT".   --- SD2IEC CBM COMMANDS ---
+1190 PRINT"change to sub directory foo
+1200 print".open1,8,15,"chr$(34)"cd/foo"chr$(34)":close1.
+1210 rem    show cbm commands
+1220 print"change to root directory /foo
+1230 print".open1,8,15,"chr$(34)"cd//foo"chr$(34)":close1."
+1240 print"change to parent directory ..
+1250 print".open1,8,15,"chr$(34)"cd_"chr$(34)":close1."
+1260 print"load file
+1270 print".load"chr$(34)"//somedir/:file"chr$(34)":close1."
+1280 print"find complete docu in 'readme' file of
+1290 print"git web interface at www.sd2iec.de"
+1300 return

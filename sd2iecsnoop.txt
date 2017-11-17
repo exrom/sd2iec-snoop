@@ -1,7 +1,9 @@
 0 rem *********************
 1 rem sd2iec snoop by exrom
-2 rem *********************
-3 goto 150
+2 rem https://github.com/exrom/sd2iec-snoop
+3 rem licensed under the gnu general public license
+4 rem *********************
+5 goto 1000
 10 rem ***********************
 11 rem          menu
 12 rem ***********************
@@ -41,89 +43,102 @@ rem maximum line length of 80 characters is up to here                 ------->
 45 print"     browser
 46 print:print:print
 47 return
-150 rem initial device adress
-160 da=8
-170 rem
-180 poke53280,12:poke53281,12
-190 gosub 10:rem menu
-200 gosub 910:rem status
-210 print
-220 geta$:ifa$=""then220
-230 ifasc(a$)=133thengosub630
-240 ifasc(a$)=134thengosub790
-250 ifasc(a$)=135thengosub1150
-260 ifasc(a$)=136thengosub1010
-270 ifasc(a$)=219thengosub1100
-280 print"<hit any key>"
-290 geta$:ifa$=""then290
-300 goto 190
-310 rem
-320 rem
-330 rem
-630 rem ***********************
-640 rem         version
-650 rem ***********************
-660 print"dos version:
-670 open1,da,15
-680 print#1,"ui"
-690 input#1,a1$,a2$,a3$,a4$
-700 close1
-710 printa1$","a2$","a3$","a4$
-720 ifnotleft$(a2$,6)="sd2iec" then780
-730 open1,da,15
-740 print#1,"x?"
-750 input#1,a1$,a2$,a3$,a4$
-760 close1
-770 printa1$","a2$","a3$","a4$
-780 return
-790 rem ***********************
-800 rem         adress
-810 rem ***********************
-820 print"old device adress:"da
-830 input"new device adress";nd
-840 ifnd<4ornd>30 then return
-850 print"changing temporarily to"nd"...
-860 open1,da,15
-870 print#1,"u0>"+chr$(nd)
-880 close1
-890 da=nd
-900 return
-910 open1,da,15
-920 input#1,a1$,a2$,a3$,a4$
-930 printa1$","a2$","a3$","a4$
-940 close1
-950 return
-960 rem ***********************
-970 rem          rtc
-980 rem ***********************
-990 print"- not implemented yet -"
-1000 return
-1010 rem ***********************
-1020 rem          boot
-1030 rem ***********************
-1040 ?:?cH(17)"load"chr$(34)"fibr"chr$(34)","da;:?cH(145)cH(145)cH(145)
-1050 fori=1to1541:next
-1060 poke631,131:poke198,1
-1070 end
-1080 rem point of no return
-1090 run
-1100 rem press shift+ for fake output
-1110 print"dos version:
-1120 print"73,sd2iec v0.10.3,00,00
-1130 print"09,sd2iec v0.10.3-m644p-sw2,00,00
-1140 return
-1150 rem ***********************
-1160 rem    show cbm commands
-1170 rem ***********************
-1180 print:printcH(147)"   --- sd2iec cbm commands ---
-1190 print:print"change to sub directory foo
-1200 print"open1,8,15,"chr$(34)"cd/foo"chr$(34)":close1
-1220 print:print"change to root directory /foo
-1230 print"open1,8,15,"chr$(34)"cd//foo"chr$(34)":close1
-1240 print:print"change to parent directory ..
-1250 print"open1,8,15,"chr$(34)"cd_"chr$(34)":close1
-1260 print:print"load file
-1270 print"load"chr$(34)"//somedir/:file"chr$(34)":close1
-1280 print:print"find complete docu in 'readme' file of
-1290 print"git web interface at www.sd2iec.de"
-1300 return
+
+1000 rem initial device adress
+1010 da=8
+1020 rem
+1030 poke53280,12:poke53281,12
+1040 gosub 10:rem menu
+1050 gosub 22000:rem status
+1060 print
+1070 geta$:ifa$=""then1070
+1080 ifasc(a$)=133thengosub20000
+1090 ifasc(a$)=134thengosub21000
+1100 ifasc(a$)=135thengosub24000
+1110 ifasc(a$)=136thengosub25000
+1120 ifasc(a$)=219thengosub26000: rem shift +
+1130 print"<hit any key>"
+1140 geta$:ifa$=""then1140
+1150 goto1030
+1160 rem
+1170 rem
+1180 rem
+
+20000 rem ***********************
+20010 rem         version
+20020 rem ***********************
+20030 print"dos version:
+20040 open1,da,15
+20050 print#1,"ui"
+20060 input#1,a1$,a2$,a3$,a4$
+20070 close1
+20080 printa1$","a2$","a3$","a4$
+20090 ifnotleft$(a2$,6)="sd2iec"then20140
+20100 open1,da,15
+20110 print#1,"x?"
+20120 input#1,a1$,a2$,a3$,a4$
+20130 close1
+20140 printa1$","a2$","a3$","a4$
+20150 return
+
+21000 rem ***********************
+21010 rem         adress
+21020 rem ***********************
+21030 print"old device adress:"da
+21040 input"new device adress";nd
+21050 ifnd<4ornd>30 then return
+21060 print"changing temporarily to"nd"...
+21070 open1,da,15
+21080 print#1,"u0>"+chr$(nd)
+21090 close1
+21100 da=nd
+21110 return
+
+22000 rem ***********************
+22010 rem         status
+22020 rem ***********************
+22030 open1,da,15
+22040 input#1,a1$,a2$,a3$,a4$
+22050 printa1$","a2$","a3$","a4$
+22060 close1
+22070 return
+
+23000 rem ***********************
+23010 rem          rtc
+23020 rem ***********************
+23030 print"- not implemented yet -"
+23040 return
+
+24000 rem ***********************
+24010 rem    show cbm commands
+24020 rem ***********************
+24030 print:printcH(147)"   --- sd2iec cbm commands ---
+24040 print:print"change to sub directory foo
+24050 print"open1,8,15,"chr$(34)"cd/foo"chr$(34)":close1
+24060 print:print"change to root directory /foo
+24070 print"open1,8,15,"chr$(34)"cd//foo"chr$(34)":close1
+24080 print:print"change to parent directory ..
+24090 print"open1,8,15,"chr$(34)"cd_"chr$(34)":close1
+24100 print:print"load file
+24110 print"load"chr$(34)"//somedir/:file"chr$(34)":close1
+24120 print:print"find complete docu in 'readme' file of
+24130 print"git web interface at www.sd2iec.de"
+24140 return
+
+25000 rem ***********************
+25010 rem          boot
+25020 rem ***********************
+25030 ?:?cH(17)"load"chr$(34)"fibr"chr$(34)","da;:?cH(145)cH(145)cH(145)
+25040 fori=1to1541:next
+25050 poke631,131:poke198,1
+25060 end
+
+26000 rem ***********************
+26010 rem   sd2iec fake output
+26020 rem ***********************
+26030 rem press shift+ for fake output
+26040 print"dos version:
+26050 print"73,sd2iec v0.10.3,00,00
+26060 print"09,sd2iec v0.10.3-m644p-sw2,00,00
+26070 return
+

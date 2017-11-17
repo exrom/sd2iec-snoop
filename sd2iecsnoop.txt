@@ -1,13 +1,51 @@
-100 rem *********************
-110 rem sd2iec snoop by exrom
-120 rem *********************
-130 rem
-140 rem
+0 rem *********************
+1 rem sd2iec snoop by exrom
+2 rem *********************
+3 goto 150
+10 rem ***********************
+11 rem          menu
+12 rem ***********************
+rem maximum line length of 80 characters is up to here                 ------->
+13 ?cH(147);:?tab(20)cH(18)cH(31)"                 "cH(223):?tab(20)cH(18)"  ";
+14 ?cH(30)"  "cH(31)" "cH(30)"  "cH(31)"  "cH(30)"  "cH(31)"  ";
+15 ?cH(129)"   "cH(31)"  "cH(223)
+16 ?tab(20)cH(18)" "cH(30)" "cH(31)"   "cH(30)" "cH(31)" "cH(30)" "cH(31)"   ";
+17 ?cH(30)" "cH(31)"       "
+18 ?tab(20)cH(18)" "cH(30)"   "cH(31)" "cH(30)" "cH(31)" "cH(30)" "cH(31)" ";
+19 ?cH(30)"   "cH(31)"  "cH(129)"    "cH(31)" "
+20 ?tab(20)cH(18)"   "cH(30)" "cH(31)" "cH(30)" "cH(31)" "cH(30)" "cH(31)" ";
+21 ?cH(30)" "cH(31)"         "
+22 ?tab(20)cH(18)" "cH(30)"   "cH(31)" "cH(30)"  "cH(31)"  ";
+23 ?cH(30)"   "cH(31)"  "cH(129)"    "cH(31)" "
+24 ?tab(20)cH(18)cH(31)"                   "
+25 ?tab(20)cH(18)" "cH(30)"   "cH(31)"  "cH(30)"  "cH(31)"  ";
+26 ?cH(30)"  "cH(31)"  "cH(129)"    "cH(31)" "
+27 ?tab(20)cH(18)"  "cH(30)" "cH(31)"  "cH(30)" "cH(31)"   ";
+28 ?cH(30)" "cH(31)"         "
+29 ?tab(20)cH(18)"  "cH(30)" "cH(31)"  "cH(30)"   "cH(31)" ";
+30 ?cH(30)" "cH(31)"    "cH(129)"    "cH(31)" "
+31 ?tab(20)cH(18)"  "cH(30)" "cH(31)"  "cH(30)" "cH(31)"   ";
+32 ?cH(30)" "cH(31)"         "
+33 ?tab(20)cH(18)" "cH(30)"   "cH(31)"  "cH(30)"  "cH(31)"  ";
+34 ?cH(30)"  "cH(31)"  "cH(129)"    "cH(31)" "
+35 ?tab(20)cH(18)cH(31)"                   "
+36 printcH(19)cH(31)"sd2iec snoop
+37 printcH(155)"v0.3  by exrom"cH(31)cH(151):print
+38 print"-f1- show dos
+39 print"     version
+40 print"-f3- change drive
+41 print"     number"da
+42 print"-f5- show sd2iec's
+43 print"     cbm commands
+44 print"-f7- boot file
+45 print"     browser
+46 print:print:print
+47 return
 150 rem initial device adress
 160 da=8
 170 rem
 180 poke53280,12:poke53281,12
-190 gosub 340:rem menu
+190 gosub 10:rem menu
 200 gosub 910:rem status
 210 print
 220 geta$:ifa$=""then220
@@ -22,35 +60,6 @@
 310 rem
 320 rem
 330 rem
-340 rem ***********************
-350 rem          menu
-360 rem ***********************
-370 print".";
-380 printtab(20)".                 ."
-390 printtab(20)"  .  . .  .  .  .  .   .  ."
-400 printtab(20)" . .   . . . .   . .       "
-410 printtab(20)" .   . . . . . .   .  .    . "
-420 printtab(20)"   . . . . . . . .         "
-430 printtab(20)" .  .  .  .  .   .  .    . "
-440 printtab(20)"                   "
-450 printtab(20)" .   .  .  .  .  .  .    . "
-460 printtab(20)"  . .  . .   . .         "
-470 printtab(20)"  . .  .   . . .    .    . "
-480 printtab(20)"  . .  . .   . .         "
-490 printtab(20)" .   .  .  .  .  .  .    . "
-500 printtab(20)"                   "
-510 print"..sd2iec snoop
-520 print".v0.2 by exrom.
-530 PRINT".-f1- show dos
-540 print"     version
-550 print"-f3- change drive
-560 print"     number"da
-570 print"-f5- show sd2iec's
-580 print"     cbm commands
-590 print"-f7- boot file
-600 print"     browser
-610 print"
-620 return
 630 rem ***********************
 640 rem         version
 650 rem ***********************
@@ -92,30 +101,29 @@
 1010 rem ***********************
 1020 rem          boot
 1030 rem ***********************
-1040 print"......load"chr$(34)"fibr"chr$(34)","da;:print".:"
-1050 FORI=1TO1541:NEXT
-1060 POKE631,131:POKE198,1
-1070 END
-1080 REM POINT OF NO RETURN
-1090 RUN
-1100 REM PRESS SHIFT+ FOR FAKE OUTPUT
-1110 PRINT"DOS VERSION:
-1120 PRINT"73,SD2IEC V0.10.3,00,00
-1130 PRINT"09,SD2IEC V0.10.3-M644P-SW2,00,00
-1140 RETURN
-1150 REM ***********************
-1160 REM    SHOW CBM COMMANDS
-1170 REM ***********************
-1180 PRINT".   --- SD2IEC CBM COMMANDS ---
-1190 PRINT"change to sub directory foo
-1200 print".open1,8,15,"chr$(34)"cd/foo"chr$(34)":close1.
-1210 rem    show cbm commands
-1220 print"change to root directory /foo
-1230 print".open1,8,15,"chr$(34)"cd//foo"chr$(34)":close1."
-1240 print"change to parent directory ..
-1250 print".open1,8,15,"chr$(34)"cd_"chr$(34)":close1."
-1260 print"load file
-1270 print".load"chr$(34)"//somedir/:file"chr$(34)":close1."
-1280 print"find complete docu in 'readme' file of
+1040 ?:?cH(17)"load"chr$(34)"fibr"chr$(34)","da;:?cH(145)cH(145)cH(145)
+1050 fori=1to1541:next
+1060 poke631,131:poke198,1
+1070 end
+1080 rem point of no return
+1090 run
+1100 rem press shift+ for fake output
+1110 print"dos version:
+1120 print"73,sd2iec v0.10.3,00,00
+1130 print"09,sd2iec v0.10.3-m644p-sw2,00,00
+1140 return
+1150 rem ***********************
+1160 rem    show cbm commands
+1170 rem ***********************
+1180 print:printcH(147)"   --- sd2iec cbm commands ---
+1190 print:print"change to sub directory foo
+1200 print"open1,8,15,"chr$(34)"cd/foo"chr$(34)":close1
+1220 print:print"change to root directory /foo
+1230 print"open1,8,15,"chr$(34)"cd//foo"chr$(34)":close1
+1240 print:print"change to parent directory ..
+1250 print"open1,8,15,"chr$(34)"cd_"chr$(34)":close1
+1260 print:print"load file
+1270 print"load"chr$(34)"//somedir/:file"chr$(34)":close1
+1280 print:print"find complete docu in 'readme' file of
 1290 print"git web interface at www.sd2iec.de"
 1300 return

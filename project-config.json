@@ -1,0 +1,13 @@
+{
+    "name": "sd2iecsnoop",
+    "description": "Project sd2iec snoop",
+    "toolkit": "basic",
+    "sources": [
+        "src/sd2iecsnoop.bas"
+    ],
+    "build": "debug",
+    "definitions": [],
+    "includes": [],
+    "args": [],
+    "compiler": ""
+}

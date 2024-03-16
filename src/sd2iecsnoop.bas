@@ -28,26 +28,26 @@
 10010 rem          menu
 10020 rem ***********************
 PRINT"{clear}";
-PRINTtab(20)"{rvs on}{blue}                 "chr$(223)
-PRINTtab(20)"{ctrl-r}  {green}  {blue} {green}  {blue}  {green}  {blue}  {orange}   {blue}  "chr$(223)
-PRINTtab(20)"{ctrl-r} {green} {blue}   {green} {blue} {green} {blue}   {green} {blue}       "
-PRINTtab(20)"{ctrl-r} {green}   {blue} {green} {blue} {green} {blue} {green}   {blue}  {orange}    {blue} "
-PRINTtab(20)"{ctrl-r}   {green} {blue} {green} {blue} {green} {blue} {green} {blue}         "
-PRINTtab(20)"{ctrl-r} {green}   {blue} {green}  {blue}  {green}   {blue}  {orange}    {blue} "
-PRINTtab(20)"{ctrl-r}                   "
-PRINTtab(20)"{ctrl-r} {green}   {blue}  {green}  {blue}  {green}  {blue}  {orange}    {blue} "
-PRINTtab(20)"{ctrl-r}  {green} {blue}  {green} {blue}   {green} {blue}         "
-PRINTtab(20)"{ctrl-r}  {green} {blue}  {green}   {blue} {green} {blue}    {orange}    {blue} "
-PRINTtab(20)"{ctrl-r}  {green} {blue}  {green} {blue}   {green} {blue}         "
-PRINTtab(20)"{ctrl-r} {green}   {blue}  {green}  {blue}  {green}  {blue}  {orange}    {blue} "
-PRINTtab(20)"{ctrl-r}                   "
-PRINT"{home}sd2iec snoop{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor down}{grey3}v0.5  by exrom{blue}{darkgrey}":PRINT
+PRINTtab(20)"{rvs on}{blue}                 {$DF}"
+PRINTtab(20)"{rvs on}  {green}  {blue} {green}  {blue}  {green}  {blue}  {orange}   {blue}  {$DF}"
+PRINTtab(20)"{rvs on} {green} {blue}   {green} {blue} {green} {blue}   {green} {blue}       "
+PRINTtab(20)"{rvs on} {green}   {blue} {green} {blue} {green} {blue} {green}   {blue}  {orange}    {blue} "
+PRINTtab(20)"{rvs on}   {green} {blue} {green} {blue} {green} {blue} {green} {blue}         "
+PRINTtab(20)"{rvs on} {green}   {blue} {green}  {blue}  {green}   {blue}  {orange}    {blue} "
+PRINTtab(20)"{rvs on}                   "
+PRINTtab(20)"{rvs on} {green}   {blue}  {green}  {blue}  {green}  {blue}  {orange}    {blue} "
+PRINTtab(20)"{rvs on}  {green} {blue}  {green} {blue}   {green} {blue}         "
+PRINTtab(20)"{rvs on}  {green} {blue}  {green}   {blue} {green} {blue}    {orange}    {blue} "
+PRINTtab(20)"{rvs on}  {green} {blue}  {green} {blue}   {green} {blue}         "
+PRINTtab(20)"{rvs on} {green}   {blue}  {green}  {blue}  {green}  {blue}  {orange}    {blue} "
+PRINTtab(20)"{rvs on}                   "
+PRINT"{home}sd2iec snoop{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor down}{grey3}v0.4  by exrom{blue}{darkgrey}":PRINT
 PRINT"{grey3}f1{darkgrey} show dos{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor down}version"
 PRINT"{grey3}f3{darkgrey} change drive{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor down}number"da
 PRINT"{grey3}f5{darkgrey} show sd2iec's{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor down}cbm commands"
 PRINT"{grey3}f7{darkgrey} boot"chr$(34)":*"chr$(34)","chr$(48+da)",1":PRINT
 PRINT"{grey3}c{darkgrey}  create empty d64{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor left}{cursor down}on sd2iec":PRINT
-PRINT"https://github.com/exrom/sd2iec-snoop":PRINT
+PRINT"github.com/exrom/sd2iec-snoop":PRINT
 RETURN
 
 20000 rem ***********************

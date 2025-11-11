@@ -1,0 +1,13 @@
+{
+    "name": "basic",
+    "description": "Project basic",
+    "toolkit": "basic",
+    "sources": [
+        "src/sd2iecsnoop.bas"
+    ],
+    "build": "debug",
+    "definitions": [],
+    "includes": [],
+    "args": [],
+    "compiler": ""
+}

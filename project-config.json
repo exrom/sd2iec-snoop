@@ -1,13 +1,17 @@
 {
     "name": "sd2iecsnoop",
-    "description": "Project sd2iec snoop",
-    "toolkit": "basic",
+    "description": "Project sd2iec-snoop",
+    "toolkit": "cc65",
     "sources": [
-        "src/sd2iecsnoop.bas"
+        "src/sd2iecsnoop.c"
     ],
-    "build": "debug",
+    "build": "",
     "definitions": [],
     "includes": [],
+    "assemblerFlags": "",
+    "compilerFlags": "-Os",
+    "linkerFlags": "",
+    "machine": "c64",
     "args": [],
     "compiler": ""
 }

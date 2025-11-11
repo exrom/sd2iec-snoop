@@ -1,5 +1,10 @@
 # Change Log
 
+## V1.0
+	migrate to c language; cc65 - vscode+vs64
+	directory listing
+	RTC read
+
 ## V0.4
     migrate basic code to VS64 development environment - thanks to rolandshacks!
     add d64 image creation for sd2iec

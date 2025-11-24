@@ -3,7 +3,7 @@
     "description": "Project sd2iec-snoop",
     "toolkit": "cc65",
     "sources": [
-        "src/sd2iecsnoop.c"
+        "src/scroll.c"
     ],
     "build": "",
     "definitions": [],

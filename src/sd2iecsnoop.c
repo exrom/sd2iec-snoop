@@ -1,3 +1,17 @@
+/** 
+ * 
+ * SD2IEC Snoop is a helper tool for the sd2iec floppy drive emulator running on the C64. 
+ *
+ * Created 2017 by exrom   exrom @ posteo.de
+ *
+ * This work is licensed under the terms of the GPL V3. See COPYING for details.
+ *
+ * THE PROGRAMS ARE DISTRIBUTED IN THE HOPE THAT THEY WILL BE USEFUL,
+ * BUT WITHOUT ANY WARRANTY. USE THEM AT YOUR OWN RISK!
+ *
+ * https://github.com/exrom/sd2iec-snoop
+ */
+
 #include <stdio.h>
 #include <conio.h>
 #include <string.h>
@@ -6,7 +20,7 @@
 #include <cbm.h>
 #include <errno.h>      // _oserror
 
-#define SCREEN_POS_LOGO_X       (21)
+#define SCREEN_POS_LOGO_X               (21)
 #define SCREEN_COLUMN_OFFSET_MENU       (3)
 
 #define SCREEN_RAM          ((unsigned char*)0x400)
@@ -22,6 +36,7 @@ typedef unsigned char uint8_t;
 typedef unsigned int  uint16_t;
 
 uint8_t snp_u8CurrentDevice = 8;
+uint8_t snp_u8sd2iecDevice = 0;
 uint8_t snp_buf[128];
 
 const uint8_t d64_seek_array[] = {'p', 3, 255, 170, 2, 0};
@@ -98,15 +113,15 @@ void cgets(uint8_t *string, const uint8_t len)
     do
     {
         key = cgetc();
+        cputc(key);
         if ((key == '\n'))      /* stop on enter */
         {
-            cputc(key);cput_newline(); /* newline */
+            cputc('\r');        /* + carriage return */
             string[idx]=0;
             break;
         }
-        cputc(key);
         string[idx]=key;
-        if (idx<(len-1)) ++idx;     /* keep printing entered chars even if buffer end reached */
+        if (idx<len) ++idx;     /* keep printing entered chars even if buffer end reached */
     }
     while(1);
     cursor(0);
@@ -163,6 +178,7 @@ void printDOSVersions(void)
                 //for(u8Tmp=MAX_CMD_STR_LEN; u8Tmp!=0; u8Tmp--) if (snp_buf[u8Tmp]=='\n') snp_buf[u8Tmp]=0;   /* cputs already does LF */
                 cputs(snp_buf);
                 snp_u8CurrentDevice = u8Device;
+                snp_u8sd2iecDevice = u8Device;
             }
         }
         else
@@ -178,7 +194,17 @@ void cbm_printdir (uint8_t lfn)
     uint8_t byte, u8State, u8newline = 0;
     uint16_t u16Size;
 
-    if (cbm_opendir(lfn, snp_u8CurrentDevice) == 0)
+    if (snp_u8sd2iecDevice == snp_u8CurrentDevice)
+    {
+        /* this drive is a sd2iec - print extended dir info */
+        memcpy(snp_buf, "$=t", 4);
+    }
+    else
+    {
+        /* standard directory format */
+        memcpy(snp_buf, "$", 2);
+    }
+    if (cbm_opendir(lfn, snp_u8CurrentDevice, snp_buf) == 0)
     {
         if (!cbm_k_chkin(lfn))
         {
@@ -198,9 +224,9 @@ void cbm_printdir (uint8_t lfn)
                     case 2:                 /* 16 bit line number/file size */
                         u16Size = byte;
                         if (u8newline)
-                            {
-                                screen_scroll();
-                            }
+                        {
+                            screen_scroll();
+                        }
                         u8State++;
                         break;
                     case 3:
@@ -229,7 +255,8 @@ void cbm_printdir (uint8_t lfn)
                             }
                             break;
                         }
-                        cputc(byte);
+                        /* needed fo $=t output that uses last column */
+                        if (wherex()<(SCREEN_LINE_LEN-1)) cputc(byte);
                 }
             }
         }
@@ -344,7 +371,7 @@ void create_d64(void)
                 }
                 else
                 {
-                    cputs("formatting...\r\n");
+                    cputs("formatting...\r\n\n");
                     tmp1[0]=0;
                     strcat(tmp1, "n:");
                     strcat(tmp1, disclabel);
@@ -388,29 +415,55 @@ void boot1st(void)
 void rtc(void)
 {
     uint8_t u8Tmp;
+    /*                      01234567890123456890123   */
+    uint8_t au8TimeCmd[] = "t-wiyyyy mm dd hh mm ss";
+    /* We cannot use t-rd as it means to have \0 in the command string (for sunday or am) which cbm_open() cannot handle as sees this as end of string :-( */
 
-    cputs("t-r:  ");
-
-    u8Tmp = dos_command(15, snp_u8CurrentDevice, CBM_COMMAND, "T-R", snp_buf, sizeof(snp_buf));
-    if (!u8Tmp)
+    while(1)
     {
-        cputs(snp_buf);
-        cput_newline();
-        if (snp_buf[0] == '3' && snp_buf[1] == '0')
+        cputs("t-ri:  ");
+    
+        u8Tmp = dos_command(15, snp_u8CurrentDevice, CBM_COMMAND, "t-ri", snp_buf, sizeof(snp_buf));
+        if (!u8Tmp)
         {
-            cputs("real time clock not available!");
-        }
-        else if (snp_buf[0] == '3' && snp_buf[1] == '1')
-        {
-            cputs("rts is not set");
-        }
-        cput_newline();
-    }
-    else
-    {
-        printDOSErrorMsg(u8Tmp);
-    }
+            cputs(snp_buf);
+            cput_newline();
+            if (snp_buf[0] == '3' && snp_buf[1] == '0')
+            {
+                cputs("real time clock not available!");
+            }
+            else if (snp_buf[0] == '3' && snp_buf[1] == '1')
+            {
+                cputs("rtc is not set"); 
+            }
+            cput_newline();
 
+            cputs("<s>et rtc   <m>ain menu\r\n\n");
+            do {} while (0 == (u8Tmp = cgetc()));
+            if (u8Tmp == 'm') return;
+            if (u8Tmp == 's')
+            {
+                /*     <--------------------------------------><--------------------------------------> */
+                //cputs("dow (0=sun 1=mon 2=tue 3=wed 4=thu 5=fri6=sat     :");cgets(snp_buf, sizeof(snp_buf));au8TimeCmd[4] = 1;//(uint8_t) atoi(snp_buf);
+                cputs("year yyyy : ");cgets(&au8TimeCmd[4], 4); au8TimeCmd[8] = '-';
+                cputs("month  mm : ");cgets(&au8TimeCmd[9], 2); au8TimeCmd[11] = '-';
+                cputs("day    dd : ");cgets(&au8TimeCmd[12], 2); au8TimeCmd[14] = 't';
+                cputs("hour   hh : ");cgets(&au8TimeCmd[15], 2); au8TimeCmd[17] = ':';
+                cputs("minute mm : ");cgets(&au8TimeCmd[18], 2); au8TimeCmd[20] = ':';
+                cputs("second ss : ");cgets(&au8TimeCmd[21], 2);
+
+                cputs("\nsending ");cputs(au8TimeCmd);cput_newline();
+                dos_command(15, snp_u8CurrentDevice, CBM_COMMAND, au8TimeCmd, NULL, 0);
+                cputs("\npress any key");
+                do {} while (0 == (u8Tmp = cgetc()));
+            }
+            clrscr();
+        }
+        else
+        {
+            printDOSErrorMsg(u8Tmp);
+        }
+    }
 }
 
 #define LOGO_SIZE_X     19
@@ -474,15 +527,12 @@ void printmenu(void)
 
     clrscr();
 
-    textcolor(COLOR_BLUE);
-    cbm_k_bsout(0x8E);      // upper case
-
     printlogo();
 
     /* main menu */
     gotoxy(0,0);
     textcolor(COLOR_BLUE); cputs ("sd2iec snoop\r\n");
-    textcolor(COLOR_GREEN);cputs ("v1.0 by exrom\r\n\n");
+    textcolor(COLOR_GREEN);cputs ("v2.0 by exrom\r\n\n");
 
     for(i=0; i<(sizeof(menutxt)/sizeof(const uint8_t*)); i++)
     {
@@ -507,6 +557,8 @@ int main()
     uint8_t u8Char;
 
     bordercolor(COLOR_GRAY2);bgcolor(COLOR_GRAY2);
+    cbm_k_bsout(0x8E);      // upper case + symbols display as CC65 switches to lower 
+    clrscr();printDOSVersions();cgetc();
     while(1)
     {
         printmenu();
@@ -518,7 +570,7 @@ int main()
             case CH_F2:
                 clrscr();sd2iec_cheats();cgetc();break;
             case CH_F3:
-                clrscr();rtc();cgetc();break;
+                clrscr();rtc();break;
             case CH_F4:
                 clrscr();create_d64();break;
             case CH_F5:

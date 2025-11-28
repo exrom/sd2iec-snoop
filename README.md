@@ -23,6 +23,11 @@ In case of sd2iec, also the extended version (cmd X?) is shown.
 
 Some commands which aim to a certain drive will use what is shown as 'current drive' on the main menu. SD2IEC Snoop will auto-set the current drive to the number where an sd2iec was detected.
 
+## show directory
+
+If the current device is a sd2iec the extended $-t directory with time stamps is used. sd2iec is detected by the get drive versions command automatically on start up.
+
+
 ## change drive id
 
 This changes the device number in the drive's RAM using the u0> command. This works on both cbm drives and sd2iec. 
@@ -45,7 +50,13 @@ and terminate sd2iec snoop thereby. May be useful if 1st file on a d64 is a file
 
 ## set rtc
 
-Can display (TODO and set) time+date of sd2iec's real time clock. Works only if sd2iec firmware and hardware supports RTC.
+Can display and set the time and date of sd2iec's real time clock - if sd2iec firmware and hardware supports RTC.  
+To keep the program lean, no checks are performed on the entered data. Make sure, to provide the exact number of characters requested (4 digits for year, 2 fot the rest). 
+After setting rtc, please check if sd2iec accepted your entry. You may repeatedly press any key in this screen to refresh time display and watch the seconds changing.
+Note, there is no time zone handling anywhere. PC will convert from UTC to local.
+
+Sd2iec snoop dos not ask for day of week, does not calculate it on computer side and does transfer it to sd2iec. 
+Sd2iec calculates the day of week itself, unfortunately not always correct. See rtc.md for details.
 
 # Remarks
 

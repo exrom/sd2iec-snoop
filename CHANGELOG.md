@@ -1,5 +1,10 @@
 # Change Log
 
+## V2.0
+
+	RTC setting of time/date support
+	extended directory listing
+
 ## V1.0
 	migrate to c language; cc65 - vscode+vs64
 	directory listing

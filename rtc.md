@@ -166,6 +166,13 @@ To use iso format is also simpler as no string to integer calculation is needed 
 
 sd2iec snoop does not try to work around the dow bug because this would cause more effort (and program complexity) on c64 side.
 
+# rtc fix in sd2iec v1.0.0atentdead0-37
+
+Version v1.0.0atentdead0-37 of sd2iec does now calculate the correct day of week.
+ Ingo Korb fixed a bug in the day_of_week() function (thanks Ingo!).
+ 
+I could successfully update the firmware of my sd2iec with a 2GB sized SD (not SDHC) card after i formatted it to fat16 (not fat32!).
+
 
 ### other rtc tools reference
 
